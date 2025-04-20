@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 from openai import OpenAI
 from xhtml2pdf import pisa
 from io import BytesIO
+import os
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"  # required for session handling
 
 # Groq AI API
-api_key = "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"
+api_key = os.getenv("GROQ_API_KEY")
 client = OpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
 
 @app.route('/', methods=['GET', 'POST'])
