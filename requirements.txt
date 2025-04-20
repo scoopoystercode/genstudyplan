@@ -1,3 +1,0 @@
-Flask
-openai
-xhtml2pdf

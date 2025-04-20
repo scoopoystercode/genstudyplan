@@ -2,13 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 from openai import OpenAI
 from xhtml2pdf import pisa
 from io import BytesIO
-import os
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"  # required for session handling
 
 # Groq AI API
-api_key = os.getenv("GROQ_API_KEY")
+api_key = "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"
 client = OpenAI(api_key=api_key, base_url="https://api.groq.com/openai/v1")
 
 @app.route('/', methods=['GET', 'POST'])
@@ -34,7 +33,6 @@ def index():
         plan = response.choices[0].message.content
         session['generated_plan'] = plan
         return redirect(url_for('plan'))
-
     return render_template('index.html')
 
 @app.route('/plan')
@@ -49,9 +47,6 @@ def download_pdf():
     plan = session.get('generated_plan', None)
     if not plan:
         return redirect(url_for('index'))
-
-    # Debug print to check what the plan looks like before rendering PDF
-    print("Generated Study Plan for PDF:\n", plan)
 
     pdf_buffer = BytesIO()
     html = render_template('pdf_template.html', plan=plan)
